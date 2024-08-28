@@ -1,3 +1,6 @@
+USE FastFoodDB;
+GO
+
 CREATE TRIGGER TrgAfterChangeIngredients
 ON Ingredients
 AFTER INSERT, DELETE
@@ -56,34 +59,5 @@ BEGIN
 END;
 GO
 
-CREATE TRIGGER TrgAfterChangeMenuItems
-ON MenuItems
-AFTER INSERT, DELETE
-AS
-BEGIN
-	INSERT INTO MenuItemsAudit (
-	MenuItemID,
-	MenuItemName,
-	MenuItemDescription,
-	PLU,
-	RecipeID,
-	ChangeType,
-	ChangeDate
-	)
-	SELECT COALESCE (i.MenuItemID, d.MenuItemID) AS MenuItemID,
-		COALESCE (i.MenuItemName, d.MenuItemName) AS MenuItemName,
-		COALESCE (i.MenuItemDescription, d.MenuItemDescription) AS MenuItemDescription,
-		COALESCE (i.PLU, d.PLU) AS PLU,
-		COALESCE (i.RecipeID, d.RecipeID) AS RecipeID,
-		CASE
-			WHEN i.MenuItemID IS NOT NULL AND d.MenuItemID IS NULL THEN 'INSERT'
-			WHEN i.MenuItemID IS NULL AND d.MenuItemID IS NOT NULL THEN 'DELETE'
-		END AS ChangeType,
-		GETDATE() AS ChangeDate
-	FROM inserted i 
-	FULL OUTER JOIN deleted d
-	ON i.MenuItemID = d.MenuItemID;
-END;
-GO
 
 
