@@ -8,26 +8,51 @@ GO
 CREATE TABLE Ingredients (
 IngredientName VARCHAR(100),
 IngredientShortDescription VARCHAR(200),
-IngredientId INT,
+IngredientID INT PRIMARY KEY,
 PortionUOMTypeID INT
 )
 ; 
 GO 
 
-CREATE TABLE MenuItems (
-MenuItemName VARCHAR(100),
-MenuItemDescription VARCHAR(200),
-PLU INT,
-MenuItemID INT,
-RecipeID INT,
+CREATE TABLE IngredientsAudit (
+ AuditID INT PRIMARY KEY IDENTITY(1,1),
+ IngredientID INT,
+ IngredientName VARCHAR(100),
+ IngredientShortDescription VARCHAR(200),
+ PortionUOMTypeID INT,
+ ChangeType VARCHAR(10),   
+ ChangeDate DATETIME
 )
 ;
 GO
 
 
+CREATE TABLE MenuItems (
+MenuItemName VARCHAR(100),
+MenuItemDescription VARCHAR(200),
+PLU INT,
+MenuItemID INT PRIMARY KEY,
+RecipeID INT,
+)
+;
+GO
+
+CREATE TABLE MenuItemsAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+MenuItemID INT,
+MenuItemName VARCHAR(100),
+MenuItemDescription VARCHAR(200),
+PLU INT,
+RecipeID INT,
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
+)
+;
+GO
+
 CREATE TABLE SalesDetails (
 MD5KEY_MENUITEM VARCHAR(100),
-MD5KEY_ORDERSALE VARCHAR(100),
+MD5KEY_ORDERSALE VARCHAR(100) PRIMARY KEY,
 CategoryDescription VARCHAR(200),
 DepartmentDescription VARCHAR(200),
 Description VARCHAR(200),
@@ -39,15 +64,48 @@ DiscountAmount DECIMAL(10,2),
 Price DECIMAL(10,2),
 Quantity INT,
 PLU INT,
-Id INT,
+MenuItemsID INT,
 date DATE
+)
+;
+GO
+
+CREATE TABLE SalesDetailsAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+MD5KEY_ORDERSALE VARCHAR(100),
+MD5KEY_MENUITEM VARCHAR(100),
+CategoryDescription VARCHAR(200),
+DepartmentDescription VARCHAR(200),
+Description VARCHAR(200),
+StoreNumber INT,
+TaxInclusiveAmount INT,
+TaxAmount DECIMAL(10,2),
+AdjustedPrice DECIMAL(10,2),
+DiscountAmount DECIMAL(10,2),
+Price DECIMAL(10,2),
+Quantity INT,
+PLU INT,
+MenuItemsID INT,
+date DATE,
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
 
 CREATE TABLE PortionTypes (
 PortionTypeDescription VARCHAR(20),
-PortionUOMTypeId INT
+PortionUOMTypeID INT PRIMARY KEY,
+)
+;
+GO
+
+CREATE TABLE PortionTypesAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+PortionUOMTypeID INT,
+PortionTypeDescription VARCHAR(20),
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
@@ -59,9 +117,26 @@ OrderNumber INT,
 TaxInclusiveAmount DECIMAL(10,2),
 TaxAmount DECIMAL(10,2),
 MealLocation INT,
-TransactionId INT,
+TransactionID INT PRIMARY KEY,
 StoreNumber INT,
 date DATE
+)
+;
+GO
+
+CREATE TABLE OrderTransactionsAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+TransactionID INT,
+MD5KEY_ORDERSALE VARCHAR(100),
+ChangeReceived DECIMAL(10,2),
+OrderNumber INT,
+TaxInclusiveAmount DECIMAL(10,2),
+TaxAmount DECIMAL(10,2),
+MealLocation INT,
+StoreNumber INT,
+date DATE,
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
@@ -69,29 +144,68 @@ GO
 CREATE TABLE Recipes (
 RecipeName VARCHAR(100),
 RecipeDescription VARCHAR(200),
-RecipeId INT
+RecipeID INT PRIMARY KEY
+)
+;
+GO
+
+CREATE TABLE RecipesAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+RecipeID INT,
+RecipeName VARCHAR(100),
+RecipeDescription VARCHAR(200),
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
 
 CREATE TABLE Stores (
-STORE_ADDRESS1 VARCHAR(50),
-STORE_ADDRESS2 VARCHAR(10),
-DISTRIBUTION_REGION VARCHAR(20),
-STORE_STATE VARCHAR(50),
-STORE_CITY VARCHAR(50),
-STORE_ZIP INT,
-STORE_TYPE VARCHAR(50),
-STORE_LOYALTY_FLAG CHAR(1),
-STORE_NUMBER INT
+StoreAddress1 VARCHAR(50),
+StoreAddress2 VARCHAR(10),
+DistributionRegion VARCHAR(20),
+StoreState VARCHAR(50),
+StoreCity VARCHAR(50),
+StoreZip INT,
+StoreType VARCHAR(50),
+StoreLoyaltyFlag CHAR(1),
+StoreNumber INT PRIMARY KEY 
+)
+;
+GO
+
+CREATE TABLE StoresAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+StoreNumber INT,
+StoreAddress1 VARCHAR(50),
+StoreAddress2 VARCHAR(10),
+DistributionRegion VARCHAR(20),
+StoreState VARCHAR(50),
+StoreCity VARCHAR(50),
+StoreZip INT,
+StoreType VARCHAR(50),
+StoreLoyaltyFlag CHAR(1),
+ChangeType VARCHAR(10),
+ChangeDate DATETIME 
 )
 ;
 GO
 
 CREATE TABLE SubRecipeIngredientAssignments (
-SubRecipeId INT,
-IngredientId INT,
+SubRecipeID INT,
+IngredientID INT,
 Quantity INT
+)
+;
+GO
+
+CREATE TABLE SubRecipeIngredientAssignmentsAudit (
+AuditID INT PRIMARY KEY IDENTITY(1,1),
+SubRecipeID INT,
+IngredientID INT,
+Quantity INT,
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
@@ -99,7 +213,18 @@ GO
 CREATE TABLE SubRecipe (
 SubRecipeName VARCHAR(100),
 SubRecipeDescription VARCHAR(200),
-SubRecipeId INT
+SubRecipeID INT PRIMARY KEY 
+)
+;
+GO
+
+CREATE TABLE SubRecipeAudit (
+AuditID INT PRIMARY KEY IDENTITY (1,1),
+SubRecipeID INT,
+SubRecipeName VARCHAR(100),
+SubRecipeDescription VARCHAR(200),
+ChangeType VARCHAR(10),
+ChangeDate DATETIME
 )
 ;
 GO
