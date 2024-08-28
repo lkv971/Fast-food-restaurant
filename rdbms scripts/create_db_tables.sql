@@ -52,7 +52,7 @@ GO
 
 CREATE TABLE SalesDetails (
 MD5KEY_MENUITEM VARCHAR(100),
-MD5KEY_ORDERSALE VARCHAR(100) PRIMARY KEY,
+MD5KEY_ORDERSALE VARCHAR(100),
 CategoryDescription VARCHAR(200),
 DepartmentDescription VARCHAR(200),
 Description VARCHAR(200),
@@ -65,7 +65,7 @@ Price DECIMAL(10,2),
 Quantity INT,
 PLU INT,
 MenuItemsID INT,
-date DATE
+date VARCHAR(15)
 )
 ;
 GO
@@ -86,7 +86,7 @@ Price DECIMAL(10,2),
 Quantity INT,
 PLU INT,
 MenuItemsID INT,
-date DATE,
+date VARCHAR(15),
 ChangeType VARCHAR(10),
 ChangeDate DATETIME
 )
@@ -117,9 +117,9 @@ OrderNumber INT,
 TaxInclusiveAmount DECIMAL(10,2),
 TaxAmount DECIMAL(10,2),
 MealLocation INT,
-TransactionID INT PRIMARY KEY,
+TransactionID INT,
 StoreNumber INT,
-date DATE
+date VARCHAR(15)
 )
 ;
 GO
@@ -134,7 +134,7 @@ TaxInclusiveAmount DECIMAL(10,2),
 TaxAmount DECIMAL(10,2),
 MealLocation INT,
 StoreNumber INT,
-date DATE,
+date VARCHAR(15),
 ChangeType VARCHAR(10),
 ChangeDate DATETIME
 )
@@ -161,8 +161,7 @@ ChangeDate DATETIME
 GO
 
 CREATE TABLE Stores (
-StoreAddress1 VARCHAR(50),
-StoreAddress2 VARCHAR(10),
+StoreAddress VARCHAR(50),
 DistributionRegion VARCHAR(20),
 StoreState VARCHAR(50),
 StoreCity VARCHAR(50),
@@ -177,8 +176,7 @@ GO
 CREATE TABLE StoresAudit (
 AuditID INT PRIMARY KEY IDENTITY(1,1),
 StoreNumber INT,
-StoreAddress1 VARCHAR(50),
-StoreAddress2 VARCHAR(10),
+StoreAddress VARCHAR(50),
 DistributionRegion VARCHAR(20),
 StoreState VARCHAR(50),
 StoreCity VARCHAR(50),
@@ -210,7 +208,7 @@ ChangeDate DATETIME
 ;
 GO
 
-CREATE TABLE SubRecipe (
+CREATE TABLE SubRecipes (
 SubRecipeName VARCHAR(100),
 SubRecipeDescription VARCHAR(200),
 SubRecipeID INT PRIMARY KEY 
